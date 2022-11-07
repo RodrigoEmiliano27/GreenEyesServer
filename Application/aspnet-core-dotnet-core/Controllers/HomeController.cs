@@ -48,7 +48,7 @@ namespace Green_Eyes_Back.Controllers
             PlantacaoModel platn = new PlantacaoModel();
             platn.plantacao = "teste";
 
-            new PlantacaoService("greenEyes_db","plantacao").Create(platn);
+            //new PlantacaoService("greenEyes_db","plantacao").Create(platn);
         }
 
         [HttpGet]

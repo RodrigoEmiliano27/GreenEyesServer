@@ -10,6 +10,6 @@ namespace Green_eyes_server.Model
         }
 
         [BsonElement("plant_name")]
-        public string? plantacao { get; set; } = null!;
+        public string plantacao { get; set; }
     }
 }

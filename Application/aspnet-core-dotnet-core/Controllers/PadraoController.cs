@@ -1,4 +1,5 @@
-﻿using Green_Eyes_Back.Models;
+﻿using aspnet_core_dotnet_core.Services;
+using Green_Eyes_Back.Models;
 using Green_eyes_server.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace aspnet_core_dotnet_core.Controllers
 {
     public class PadraoController<T> : Controller where T : PadraoModel
     {
-        //protected PadraoDAO<T> DAO { get; set; }
+        protected PadraoServiceMongo<T> DAO { get; set; }
         protected bool GeraProximoId { get; set; }
         protected string NomeViewIndex { get; set; } = "index";
         protected string NomeViewForm { get; set; } = "form";
@@ -62,9 +63,9 @@ namespace aspnet_core_dotnet_core.Controllers
                 }
                 else
                 {
-                    /*if (Operacao == "I")
+                    if (Operacao == "I")
                         DAO.Insert(model);
-                    else
+                    /*else
                         DAO.Update(model);*/
                     return RedirectToAction(NomeViewIndex);
                 }
