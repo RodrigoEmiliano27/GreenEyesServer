@@ -6,10 +6,10 @@ namespace Green_eyes_server.Model
     {
         public PlantacaoModel()
         {
-            this.GenerateID();
+            //this.GenerateID();
         }
 
         [BsonElement("plant_name")]
-        public string? plantacao { get; set; }
+        public string? plantacao { get; set; } = null!;
     }
 }

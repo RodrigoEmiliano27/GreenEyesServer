@@ -8,14 +8,15 @@ namespace Green_eyes_server.Model
     {
         public PadraoModel()
         {
-            GenerateID();
+            //GenerateID();
         }
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public virtual string id { get; set; }
 
-        public virtual bool Ativado { get; set; }
+        [BsonElement("ativado")]
+        public virtual bool Ativado { get; set; } = true;
 
         public void GenerateID()
         {
