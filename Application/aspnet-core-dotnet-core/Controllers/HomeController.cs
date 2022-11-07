@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Green_eyes_server.Model;
 using Microsoft.Extensions.Options;
-
+using MongoDB.Driver;
 
 namespace Green_Eyes_Back.Controllers
 {
@@ -62,6 +62,16 @@ namespace Green_Eyes_Back.Controllers
         [HttpPut]
         public string Teste2()
         {
+            MongoClient client = new MongoClient("mongodb+srv://greeneyes:1234567890@cluster-greeneyes.aqhjiq6.mongodb.net/?retryWrites=true&w=majority");
+
+            //List<string> databases = client.ListDatabaseNames().ToList();
+
+            var plantCollection = client.GetDatabase("greenEyes_db").GetCollection<PlantacaoModel>("plantacao");
+
+            PlantacaoModel plant = new PlantacaoModel();
+            plant.plantacao = "teste1";
+
+            plantCollection.InsertOne(plant);
 
             return "teste";
         }
