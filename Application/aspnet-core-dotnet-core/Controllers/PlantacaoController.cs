@@ -61,7 +61,7 @@ namespace Green_Eyes_Back.Controllers
             usuario.Nome = $"{model.plantacao}-admin";
             usuario.Tipo = 1;
             usuario.Login = usuario.Nome;
-            usuario.Senha = usuario.Senha;
+            usuario.Senha = usuario.Nome;
             UsuarioService service = new UsuarioService();
             service.Insert(usuario);
 
