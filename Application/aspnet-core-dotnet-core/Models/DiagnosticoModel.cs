@@ -4,7 +4,7 @@
     {
         public DiagnosticoModel()
         {
-            this.GenerateID();
+            //this.GenerateID();
         }
 
         public string id_foto_segmentada { get; set; }

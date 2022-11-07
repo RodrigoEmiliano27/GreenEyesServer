@@ -1,4 +1,5 @@
 ﻿using Green_eyes_server.Model;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 
@@ -12,17 +13,28 @@ namespace aspnet_core_dotnet_core.Services
             SetCollection();
         }
 
+
         protected abstract void SetCollection();
 
         protected string Collection { get; set; }
 
+
+
+
+
         public virtual void Insert(T model)
+        {
+            var collection = Connect();
+
+            collection.InsertOne(model);
+
+        }
+
+        protected IMongoCollection<T> Connect()
         {
             MongoDBConn conexao = new MongoDBConn();
 
-            var collection = conexao.GetDatabase(conexao.GetConexao()).GetCollection<T>(Collection);
-
-            collection.InsertOne(model);
+            return conexao.GetDatabase(conexao.GetConexao()).GetCollection<T>(Collection);
         }
 
         public virtual void Update(T model)

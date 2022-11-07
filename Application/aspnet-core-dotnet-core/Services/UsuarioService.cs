@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Green_Eyes_Back.Services
 {
-    public class PlantacaoService : PadraoServiceMongo<PlantacaoModel>
+    public class UsuarioService : PadraoServiceMongo<UserModel>
     {
         protected override void SetCollection()
         {
-            this.Collection = "plantacao";
+            this.Collection = "usuarios";
         }
-
         
+
     }
 }

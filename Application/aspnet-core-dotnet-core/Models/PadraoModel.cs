@@ -11,22 +11,12 @@ namespace Green_eyes_server.Model
             //GenerateID();
         }
 
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public virtual string id { get; set; }
+        [BsonElement("_id")]
+        public virtual ObjectId id { get; set; } =ObjectId.GenerateNewId();
 
         [BsonElement("ativado")]
         public virtual bool Ativado { get; set; } = true;
 
-        public void GenerateID()
-        {
-            byte[] randomByte = new byte[16];
-
-            new Random().NextBytes(randomByte);
-
-            Guid mGuid = new Guid(randomByte);
-
-            id = mGuid.ToString();
-        }
+        
     }
 }

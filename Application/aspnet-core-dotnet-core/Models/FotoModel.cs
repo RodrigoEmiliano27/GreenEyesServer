@@ -6,7 +6,7 @@ namespace Green_eyes_server.Model
     {
         public FotoModel()
         {
-            this.GenerateID();
+            //this.GenerateID();
         }
         public string link { get; set; }
 

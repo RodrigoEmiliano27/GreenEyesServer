@@ -4,7 +4,7 @@
     {
         public FotoSegmentadaModel()
         {
-            this.GenerateID();
+            //this.GenerateID();
         }
         public string data { get; set; }
 
