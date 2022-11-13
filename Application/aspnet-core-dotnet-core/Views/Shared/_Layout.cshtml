@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,39 +18,63 @@
           <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
            
-            <div class="mynav_navbar">
+                <div class="mynav_navbar">
 
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Green Eyes</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Green Eyes</a>
                  
-                 <div class="mynav_dropdown">
+                     <div class="mynav_dropdown">
                      
-                    <button class="mynav_dropbtn">
+                        <button class="mynav_dropbtn">
                         
-                        <i class="fa fa-caret-down"></i>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Plantações</a>
+                            <i class="fa fa-caret-down"></i>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Plantações</a>
 
-                    </button>
+                        </button>
 
-                    <div class="mynav_dropdown-content">
+                        <div class="mynav_dropdown-content">
 
-                        <a asp-area="" asp-controller="Home" asp-action="About">Minha plantação</a>
+                            <a asp-area="" asp-controller="Home" asp-action="About">Minha plantação</a>
 
-                        <a asp-area="" asp-controller="Plantacao" asp-action="Create">Cadastrar plantação</a>
+                            <a asp-area="" asp-controller="Plantacao" asp-action="Create">Cadastrar plantação</a>
 
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">Cadastrar Usuário</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">Cadastrar Usuário</a>
 
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">Meus diagnósticos</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">Meus diagnósticos</a>
 
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">Minhas imagens</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">Minhas imagens</a>
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sobre</a>
 
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sobre</a>
-                <a class="nav-link text-dark loginMenuBar"  style="text-align:right"asp-area="" asp-controller="Home" asp-action="Privacy">Login</a>
-            </div>
+                    @if(Context.Session.GetString("Name") != null)
+                    {                   
+                         <div class="mynav_dropdown">
+                     
+                        <button class="mynav_dropbtn">
+                        
+                            <i class="fa fa-caret-down"></i>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Context.Session.GetString("Name")</a>
+
+                        </button>
+
+                        <div class="mynav_dropdown-content">
+
+                            <a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+
+                        </div>
+
+                    </div>
+                      
+                    }
+                    else
+                    {
+                       <a class="nav-link text-dark loginMenuBar"  style="text-align:right"asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                    }                  
+                </div>
             </div>
         </nav>
 

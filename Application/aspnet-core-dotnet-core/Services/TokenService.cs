@@ -23,7 +23,7 @@ namespace Green_Eyes_Back.Services
                     new Claim(ClaimTypes.Name, user.Nome.ToString()),
                     new Claim(ClaimTypes.Role, user.Tipo.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddMinutes(20),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

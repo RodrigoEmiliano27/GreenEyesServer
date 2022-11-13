@@ -11,9 +11,18 @@ namespace Green_Eyes_Back.Services
 {
     public class UsuarioService : PadraoServiceMongo<UserModel>
     {
+        public override UserModel FindByString(string value)
+        {
+            var betterFilter = Builders<UserModel>.Filter.Eq(a => a.Login, value);
+            var collection = Connect();
+            var foundItens = collection.Find<UserModel>(betterFilter).FirstOrDefault();
+            return foundItens;
+        }
+
         protected override void SetCollection()
         {
             this.Collection = "usuarios";
+            this.SearchStringKey = "Login";
         }
         
 

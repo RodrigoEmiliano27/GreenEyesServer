@@ -11,9 +11,15 @@ namespace Green_Eyes_Back.Services
 {
     public class PlantacaoService : PadraoServiceMongo<PlantacaoModel>
     {
+        public override PlantacaoModel FindByString(string value)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void SetCollection()
         {
             this.Collection = "plantacao";
+            
         }
 
         

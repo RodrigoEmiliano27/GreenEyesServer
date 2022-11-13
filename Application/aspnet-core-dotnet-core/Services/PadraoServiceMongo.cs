@@ -17,9 +17,10 @@ namespace aspnet_core_dotnet_core.Services
         protected abstract void SetCollection();
 
         protected string Collection { get; set; }
+        protected string SearchStringKey { get; set; }
 
 
-
+        public abstract T FindByString(string value);
 
 
         public virtual void Insert(T model)
