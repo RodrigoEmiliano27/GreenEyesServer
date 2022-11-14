@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using aspnet_core_dotnet_core.Services;
 
 namespace Green_Eyes_Back.Controllers
 {
@@ -53,7 +54,7 @@ namespace Green_Eyes_Back.Controllers
             }
         }
 
-        private void SaveData(PlantacaoModel model)
+        private async void SaveData(PlantacaoModel model)
         {
             DAO.Insert(model);
             UserModel usuario = new UserModel();
@@ -64,8 +65,7 @@ namespace Green_Eyes_Back.Controllers
             usuario.Senha = usuario.Nome;
             UsuarioService service = new UsuarioService();
             service.Insert(usuario);
-
-
+            await AzureStorageHelper.CreateContainerAsync($"plant-{model.id.ToString()}");
 
         }
 

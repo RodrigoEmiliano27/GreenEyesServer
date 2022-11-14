@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Green_eyes_server.Model;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using aspnet_core_dotnet_core.Services;
+using aspnet_core_dotnet_core.Models;
 
 namespace Green_Eyes_Back.Controllers
 {
@@ -43,12 +45,14 @@ namespace Green_Eyes_Back.Controllers
         }
 
         [HttpGet]
-        public void Teste()
+        public async void Teste()
         {
-            PlantacaoModel platn = new PlantacaoModel();
-            platn.plantacao = "teste";
+            /*
+             await AzureStorageHelper.CreateContainerAsync("plant-636869d7782d0d7d53ea13d2");*/
 
-            //new PlantacaoService("greenEyes_db","plantacao").Create(platn);
+            FotoService service = new FotoService();
+            service.FindByMonthYear(11, 2022);
+           //await AzureStorageHelper.GetImageFromAzure("plant-6369a24fb23893744f69060c", "imagesteste1");
         }
 
         [HttpGet]

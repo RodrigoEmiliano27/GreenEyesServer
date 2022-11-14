@@ -20,7 +20,7 @@ namespace Green_Eyes_Back.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Nome.ToString()),
+                    new Claim(ClaimTypes.Name, user.id.ToString()),
                     new Claim(ClaimTypes.Role, user.Tipo.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(20),

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Green_eyes_server.Model
 {
@@ -8,11 +10,21 @@ namespace Green_eyes_server.Model
         {
             //this.GenerateID();
         }
-        public string link { get; set; }
 
-        public DateTime data { get; set; }
+        [BsonElement("Nome")]
+        public string Nome { get; set; }
 
-        public string id_usuario { get; set; }
+        [BsonElement("Tipo")]
+        public string Tipo { get; set; }
+
+        [BsonElement("Data")]
+        public DateTime Data { get; set; }
+
+        [BsonElement("Usuario")]
+        public ObjectId Id_usuario { get; set; }
+
+        [BsonElement("Plantacao")]
+        public ObjectId Id_plantacao { get; set; }
 
 
 

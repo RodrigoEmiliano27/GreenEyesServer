@@ -55,9 +55,6 @@ namespace Green_Eyes_Back.Controllers
             HttpContext.Session.SetString("Logado", db_user.id.ToString());
             HttpContext.Session.SetString("Name", db_user.Nome);
             HttpContext.Session.SetString("Token", token);
-            ViewBag.Token = HttpContext.Session.GetString("Token");
-            ViewBag.Logado = "Logado";
-            ViewBag.Nome = db_user.Nome;
             return RedirectToAction("index", "Home");
 
         }
