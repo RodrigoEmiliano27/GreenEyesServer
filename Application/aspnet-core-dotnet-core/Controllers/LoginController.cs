@@ -1,5 +1,8 @@
-﻿using Green_Eyes_Back.Services;
+﻿using aspnet_core_dotnet_core.Models;
+using aspnet_core_dotnet_core.Services;
+using Green_Eyes_Back.Services;
 using Green_eyes_server.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -54,6 +57,7 @@ namespace Green_Eyes_Back.Controllers
 
             HttpContext.Session.SetString("Logado", db_user.id.ToString());
             HttpContext.Session.SetString("Name", db_user.Nome);
+            HttpContext.Session.SetString("Tipo", db_user.Tipo.ToString());
             HttpContext.Session.SetString("Token", token);
             return RedirectToAction("index", "Home");
 
@@ -85,6 +89,37 @@ namespace Green_Eyes_Back.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("index", "Home");
+        }
+
+        [HttpPost]
+        [Route("SavePhoto")]
+        [Authorize(Roles = "1")]
+        public async Task<ActionResult<dynamic>> SavePhoto([FromBody] ImageAPI model)
+        {
+            string id = User.Identity.Name;
+            UsuarioService ServiceUser = new UsuarioService();
+            UserModel user = ServiceUser.FindById(MongoDB.Bson.ObjectId.Parse(id));
+            if (user != null)
+            {
+                FotoModel foto = new FotoModel();
+                foto.Id_plantacao = user.id_plantacao;
+                foto.Id_usuario = user.id;
+                foto.Data = DateTime.Now.ToUniversalTime();
+                foto.Nome = model.Nome;
+                foto.Tipo = model.Tipo;
+
+                FotoService fotoService = new FotoService();
+                fotoService.Insert(foto);
+
+                AzureStorageHelper.UploadToAzure($"plant-{foto.Id_plantacao.ToString()}", foto.Nome, model.Image);
+
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
 
     }

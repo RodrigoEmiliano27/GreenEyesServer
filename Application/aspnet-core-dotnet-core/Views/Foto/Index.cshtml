@@ -1,0 +1,23 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div >
+    <h2>Selecione um periodo para filtrar </h2>
+
+    <form asp-action="GetDates" method="post" enctype="multipart/form-data">
+
+        <label for="inicio">Data de início:</label>
+        <input type="date" id="datestart" name="datestart">
+         <br />
+        <label for="fim">Data de fim:</label>
+        <input type="date" id="dateend" name="dateend" >
+        <br />
+
+        <input type="submit" value="Pesquisar" class="btn-info" />
+        <br />
+    </form>
+    </div>
+</body>
+

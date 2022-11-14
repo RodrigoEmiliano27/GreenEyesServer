@@ -38,6 +38,24 @@ namespace aspnet_core_dotnet_core.Services
             return itens;
 
         }
+
+        public List<FotoModel> FindByDates(DateTime start, DateTime end)
+        {
+            string jsonquery = "{Data:{$gte:ISODate('dataInicial'),$lt:ISODate('datafinal')}}";
+
+            jsonquery = jsonquery.Replace("dataInicial", $"{start.Year.ToString()}-{start.Month.ToString("00")}-{start.Day.ToString("00")}");
+            jsonquery = jsonquery.Replace("datafinal", $"{end.Year.ToString()}-{end.Month.ToString("00")}-{end.Day.ToString("00")}");
+
+            BsonDocument doc = MongoDB.Bson.Serialization
+                   .BsonSerializer.Deserialize<BsonDocument>(jsonquery);
+
+
+            var collection = Connect();
+            var itens = collection.Find(doc).ToList();
+
+            return itens;
+
+        }
         public async Task<List<string>> FotosMesAno(int month, int year)
         {
             List<string> imagens = new List<string>();
@@ -56,6 +74,26 @@ namespace aspnet_core_dotnet_core.Services
             }
             return null;
             
+        }
+
+        public async Task<List<string>> FotosDates(DateTime start, DateTime end)
+        {
+            List<string> imagens = new List<string>();
+            List<FotoModel> lista = FindByDates(start, end);
+            if (lista != null)
+            {
+                foreach (FotoModel foto in lista)
+                {
+                    byte[] RawData = await AzureStorageHelper.GetDataFromBlob($"plant-{foto.Id_plantacao.ToString()}", foto.Nome);
+                    string Imagebase64 = Convert.ToBase64String(RawData);
+                    string image = $"data:image/{foto.Tipo};base64,{Imagebase64}";
+                    imagens.Add(image);
+
+                }
+                return imagens;
+            }
+            return null;
+
         }
 
         protected override void SetCollection()

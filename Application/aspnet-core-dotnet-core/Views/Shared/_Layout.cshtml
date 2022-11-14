@@ -21,37 +21,35 @@
                 <div class="mynav_navbar">
 
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Green Eyes</a>
-                 
-                     <div class="mynav_dropdown">
-                     
-                        <button class="mynav_dropbtn">
-                        
-                            <i class="fa fa-caret-down"></i>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Plantações</a>
+               
+                    @if(Context.Session.GetString("Name") != null)
+                    {
+                        <div class="mynav_dropdown">
 
-                        </button>
+                            <button class="mynav_dropbtn">
 
-                        <div class="mynav_dropdown-content">
+                                <i class="fa fa-caret-down"></i>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Minha Plantação</a>
 
-                            <a asp-area="" asp-controller="Home" asp-action="About">Minha plantação</a>
+                            </button>
 
-                            <a asp-area="" asp-controller="Plantacao" asp-action="Create">Cadastrar plantação</a>
+                            <div class="mynav_dropdown-content">
+                                
+                                @if (Context.Session.GetString("Tipo") == "1")
+                                {// permissão de adm
+                                    <a asp-area="" asp-controller="Home" asp-action="Contact">Cadastrar Usuário</a> 
+                                }
+                               
+                                <a asp-area="" asp-controller="Home" asp-action="Contact">Meus diagnósticos</a>
 
-                            <a asp-area="" asp-controller="Home" asp-action="Contact">Cadastrar Usuário</a>
+                                <a asp-area="" asp-controller="Foto" asp-action="Index">Minhas imagens</a>
 
-                            <a asp-area="" asp-controller="Home" asp-action="Contact">Meus diagnósticos</a>
-
-                            <a asp-area="" asp-controller="Home" asp-action="Contact">Minhas imagens</a>
+                            </div>
 
                         </div>
 
-                    </div>
 
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sobre</a>
 
-                    @if(Context.Session.GetString("Name") != null)
-                    {                   
                          <div class="mynav_dropdown">
                      
                         <button class="mynav_dropbtn">
@@ -68,11 +66,17 @@
                         </div>
 
                     </div>
+
+                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sobre</a>
                       
                     }
                     else
                     {
+                       <a class="nav-link text-dark" asp-area="" asp-controller="Plantacao" asp-action="Create">Cadastrar plantação</a>
+
                        <a class="nav-link text-dark loginMenuBar"  style="text-align:right"asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+
+                       <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sobre</a>
                     }                  
                 </div>
             </div>

@@ -45,7 +45,7 @@ namespace Green_Eyes_Back.Controllers
 
                     /*else
                         DAO.Update(model);*/
-                    return RedirectToAction(NomeViewIndex);
+                    return RedirectToAction("index", "Home");
                 }
             }
             catch (Exception erro)

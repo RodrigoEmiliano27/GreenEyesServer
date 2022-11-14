@@ -8,40 +8,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using aspnet_core_dotnet_core.Services;
+using aspnet_core_dotnet_core.Controllers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Green_Eyes_Back.Controllers
 {
     public class FotoController : Controller
     {
-        [HttpPost]
-        [Route("SavePhoto")]
-        [Authorize(Roles = "1")]   
-        public async Task<ActionResult<dynamic>> SavePhoto([FromBody] ImageAPI model)
+        List<string> lista = new List<string>();
+        public IActionResult Index()
         {
-            string id= User.Identity.Name;
-            UsuarioService ServiceUser = new UsuarioService();
-            UserModel user=ServiceUser.FindById(MongoDB.Bson.ObjectId.Parse(id));
-            if (user != null)
-            {
-                FotoModel foto = new FotoModel();
-                foto.Id_plantacao = user.id_plantacao;
-                foto.Id_usuario = user.id;
-                foto.Data = DateTime.Now.ToUniversalTime();
-                foto.Nome = model.Nome;
-                foto.Tipo = model.Tipo;
+            ViewBag.Tipo = null;
+            return View("Index");
+        }
 
-                FotoService fotoService = new FotoService();
-                fotoService.Insert(foto);
+        public IActionResult SeeImages()
+        {
+            ViewBag.Tipo = null;
+            List_Images teste = new List_Images();
+            teste.Images = lista;
+            return View("See");
+        }
 
-                AzureStorageHelper.UploadToAzure($"plant-{foto.Id_plantacao.ToString()}", foto.Nome, model.Image);
-
-            }
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            ViewBag.Tipo = HttpContext.Session.GetString("Tipo");
+            ViewBag.Logado = HttpContext.Session.GetString("Logado");
+            
+            if (!HelperControllers.VerificaUserLogado(HttpContext.Session))
+                context.Result = RedirectToAction("Index", "Login");
             else
             {
-                return BadRequest();
+                ViewBag.Logado = true;
+                base.OnActionExecuting(context);
             }
-
-            return Ok();
         }
+
+        public async Task<IActionResult> GetDatesAsync()
+        {
+            string start = String.Format("{0}", Request.Form["datestart"]);
+            string end = String.Format("{0}", Request.Form["dateend"]);
+            DateTime startdate = DateTime.Parse(start);
+            DateTime enddate = DateTime.Parse(end);
+            FotoService service = new FotoService();
+            lista = await service.FotosDates(startdate, enddate);
+            if (lista.Count > 0)
+            {
+                return RedirectToAction("SeeImages", "Foto");
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+
+
     }
 }

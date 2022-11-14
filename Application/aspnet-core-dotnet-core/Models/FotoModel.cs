@@ -26,6 +26,12 @@ namespace Green_eyes_server.Model
         [BsonElement("Plantacao")]
         public ObjectId Id_plantacao { get; set; }
 
+        [BsonElement("Classificado")]
+        public bool Classificado { get; set; } = false;
+
+        [BsonElement("Segmentado")]
+        public bool Segmentado { get; set; } = false;
+
 
 
 
