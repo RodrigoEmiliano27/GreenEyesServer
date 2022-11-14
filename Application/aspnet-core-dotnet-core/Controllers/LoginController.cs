@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -108,18 +109,26 @@ namespace Green_Eyes_Back.Controllers
                 foto.Nome = model.Nome;
                 foto.Tipo = model.Tipo;
 
+                Debug.WriteLine(foto);
+                Debug.WriteLine(foto.Nome);
+
                 FotoService fotoService = new FotoService();
                 fotoService.Insert(foto);
 
                 AzureStorageHelper.UploadToAzure($"plant-{foto.Id_plantacao.ToString()}", foto.Nome, model.Image);
 
+                return new
+                {
+                    Foto = foto
+                };
             }
             else
             {
                 return BadRequest();
             }
 
-            return Ok();
+            //return Ok();
+
         }
 
     }
