@@ -1,16 +1,17 @@
-﻿
+﻿@using aspnet_core_dotnet_core.Models
+@model List_Images
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <body>
     <div >
-    <h2>Selecione um periodo para filtrar </h2>
+    <h2>Imagens </h2>
 
         @if (@Model != null)
         {
             foreach (string foto in @Model.Images)
             {
-                
+                <img src="@foto"/>
             }
         }
     </div>

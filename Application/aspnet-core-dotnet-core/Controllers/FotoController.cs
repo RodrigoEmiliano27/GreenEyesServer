@@ -16,19 +16,17 @@ namespace Green_Eyes_Back.Controllers
 {
     public class FotoController : Controller
     {
-        List<string> lista = new List<string>();
+        
         public IActionResult Index()
         {
             ViewBag.Tipo = null;
             return View("Index");
         }
 
-        public IActionResult SeeImages()
+        public IActionResult SeeImages(List_Images lista)
         {
             ViewBag.Tipo = null;
-            List_Images teste = new List_Images();
-            teste.Images = lista;
-            return View("See");
+            return View("See", lista);
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -52,10 +50,12 @@ namespace Green_Eyes_Back.Controllers
             DateTime startdate = DateTime.Parse(start);
             DateTime enddate = DateTime.Parse(end);
             FotoService service = new FotoService();
-            lista = await service.FotosDates(startdate, enddate);
+            List<string> lista = await service.FotosDates(startdate, enddate);
             if (lista.Count > 0)
             {
-                return RedirectToAction("SeeImages", "Foto");
+                List_Images listImages = new List_Images();
+                listImages.Images = lista;
+                return View("See", listImages);
             }
             return RedirectToAction("Index", "Home");
 
