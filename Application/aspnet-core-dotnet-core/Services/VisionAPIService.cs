@@ -44,7 +44,7 @@ namespace aspnet_core_dotnet_core.Services
                 ), "Iteration1", fileStream, "application/octet-stream");*/
 
             var result = await predictionClient.ClassifyImageAsync(new Guid("b3ed1f68-67e2-4757-973b-71631107ab57"
-                ), "Iteration1", fileStream, "application/octet-stream");
+                ), "Iteration1", stream, "application/octet-stream");
         }
 
         private static byte[] GetImageAsByteArray(string imageFilePath)

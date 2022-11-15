@@ -1,5 +1,6 @@
 ﻿using aspnet_core_dotnet_core.Models;
 using aspnet_core_dotnet_core.Services;
+using Green_Eyes_Back.Models;
 using Green_Eyes_Back.Services;
 using Green_eyes_server.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -43,24 +44,31 @@ namespace Green_Eyes_Back.Controllers
         /// <returns></returns>
         public async Task<ActionResult<dynamic>> FazLogin(UserModel model)
         {
-            UserModel db_user = GetUser(model);
-            if (db_user == null)
+            try
             {
-                ModelState.AddModelError("Login", "Login ou senha inválidos!");
-                ModelState.AddModelError("Senha", "Login ou senha inválidos!");
-                return View("index", new UserModel());
-            }
-            // Oculta a senha
-            db_user.Senha = "";
-            // Gera o Token
-            var token = TokenService.GenerateToken(db_user);
+                UserModel db_user = GetUser(model);
+                if (db_user == null)
+                {
+                    ModelState.AddModelError("Login", "Login ou senha inválidos!");
+                    ModelState.AddModelError("Senha", "Login ou senha inválidos!");
+                    return View("index", new UserModel());
+                }
+                // Oculta a senha
+                db_user.Senha = "";
+                // Gera o Token
+                var token = TokenService.GenerateToken(db_user);
 
-            HttpContext.Session.SetString("Logado", db_user.id.ToString());
-            HttpContext.Session.SetString("idPlant", db_user.id_plantacao.ToString());
-            HttpContext.Session.SetString("Name", db_user.Nome);
-            HttpContext.Session.SetString("Tipo", db_user.Tipo.ToString());
-            HttpContext.Session.SetString("Token", token);
-            return RedirectToAction("index", "Home");
+                HttpContext.Session.SetString("Logado", db_user.id.ToString());
+                HttpContext.Session.SetString("idPlant", db_user.id_plantacao.ToString());
+                HttpContext.Session.SetString("Name", db_user.Nome);
+                HttpContext.Session.SetString("Tipo", db_user.Tipo.ToString());
+                HttpContext.Session.SetString("Token", token);
+                return RedirectToAction("index", "Home");
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
 
         }
 
@@ -68,22 +76,29 @@ namespace Green_Eyes_Back.Controllers
         [Route("login")]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] UserModel model)
         {
-            UserModel db_user = GetUser(model);
-            if (db_user == null)
-                return NotFound(new { message = "Usuário ou senha inválidos" });
-
-            // Gera o Token
-            var token = TokenService.GenerateToken(db_user);
-
-            // Oculta a senha
-            db_user.Senha = "";
-
-            // Retorna os dados
-            return new
+            try
             {
-                user = db_user,
-                token = token
-            };
+                UserModel db_user = GetUser(model);
+                if (db_user == null)
+                    return NotFound(new { message = "Usuário ou senha inválidos" });
+
+                // Gera o Token
+                var token = TokenService.GenerateToken(db_user);
+
+                // Oculta a senha
+                db_user.Senha = "";
+
+                // Retorna os dados
+                return new
+                {
+                    user = db_user,
+                    token = token
+                };
+            }
+            catch(Exception erro)
+            {
+                return BadRequest(erro.ToString());
+            }
         }
 
         public IActionResult Logout()
