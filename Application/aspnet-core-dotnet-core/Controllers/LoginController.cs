@@ -56,6 +56,7 @@ namespace Green_Eyes_Back.Controllers
             var token = TokenService.GenerateToken(db_user);
 
             HttpContext.Session.SetString("Logado", db_user.id.ToString());
+            HttpContext.Session.SetString("idPlant", db_user.id_plantacao.ToString());
             HttpContext.Session.SetString("Name", db_user.Nome);
             HttpContext.Session.SetString("Tipo", db_user.Tipo.ToString());
             HttpContext.Session.SetString("Token", token);
@@ -96,30 +97,40 @@ namespace Green_Eyes_Back.Controllers
         [Authorize(Roles = "1")]
         public async Task<ActionResult<dynamic>> SavePhoto([FromBody] ImageAPI model)
         {
-            string id = User.Identity.Name;
-            UsuarioService ServiceUser = new UsuarioService();
-            UserModel user = ServiceUser.FindById(MongoDB.Bson.ObjectId.Parse(id));
-            if (user != null)
+            try
             {
-                FotoModel foto = new FotoModel();
-                foto.Id_plantacao = user.id_plantacao;
-                foto.Id_usuario = user.id;
-                foto.Data = DateTime.Now.ToUniversalTime();
-                foto.Nome = model.Nome;
-                foto.Tipo = model.Tipo;
+                string id = User.Identity.Name;
+                UsuarioService ServiceUser = new UsuarioService();
+                UserModel user = ServiceUser.FindById(MongoDB.Bson.ObjectId.Parse(id));
+                if (user != null)
+                {
+                    FotoModel foto = new FotoModel();
+                    foto.Id_plantacao = user.id_plantacao;
+                    foto.Id_usuario = user.id;
+                    foto.Data = DateTime.Now.ToUniversalTime();
+                    foto.Nome = model.Nome;
+                    foto.Tipo = model.Tipo;
 
-                FotoService fotoService = new FotoService();
-                fotoService.Insert(foto);
+                    AzureStorageHelper.UploadToAzure($"plant-{foto.Id_plantacao.ToString()}", foto.Nome, model.Image);
 
-                AzureStorageHelper.UploadToAzure($"plant-{foto.Id_plantacao.ToString()}", foto.Nome, model.Image);
+                    FotoService fotoService = new FotoService();
+                    fotoService.Insert(foto);
+
+
+
+                }
+                else
+                {
+                    throw new Exception("Usuário inválido!");
+                }
+
+                return Ok();
+            }
+            catch (Exception erro)
+            {
+                return BadRequest(erro.ToString());
 
             }
-            else
-            {
-                return BadRequest();
-            }
-
-            return Ok();
         }
 
     }

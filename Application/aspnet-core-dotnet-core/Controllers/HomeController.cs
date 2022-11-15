@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using aspnet_core_dotnet_core.Services;
 using aspnet_core_dotnet_core.Models;
+using aspnet_core_dotnet_core.Services;
 
 namespace Green_Eyes_Back.Controllers
 {
@@ -50,9 +51,9 @@ namespace Green_Eyes_Back.Controllers
             /*
              await AzureStorageHelper.CreateContainerAsync("plant-636869d7782d0d7d53ea13d2");*/
 
-            FotoService service = new FotoService();
-            service.FindByMonthYear(11, 2022);
-           //await AzureStorageHelper.GetImageFromAzure("plant-6369a24fb23893744f69060c", "imagesteste1");
+            VisionAPIService.SendImageToApi();
+            //service.FindByMonthYear(11, 2022);
+            //await AzureStorageHelper.GetImageFromAzure("plant-6369a24fb23893744f69060c", "imagesteste1");
         }
 
         [HttpGet]

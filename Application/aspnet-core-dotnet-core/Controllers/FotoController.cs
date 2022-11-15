@@ -11,6 +11,9 @@ using aspnet_core_dotnet_core.Services;
 using aspnet_core_dotnet_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Diagnostics;
+using Green_Eyes_Back.Models;
+using MongoDB.Bson;
 
 namespace Green_Eyes_Back.Controllers
 {
@@ -19,18 +22,20 @@ namespace Green_Eyes_Back.Controllers
         
         public IActionResult Index()
         {
-            ViewBag.Tipo = null;
-            return View("Index");
-        }
-
-        public IActionResult SeeImages(List_Images lista)
-        {
-            ViewBag.Tipo = null;
-            return View("See", lista);
+            try
+            {
+                ViewBag.Tipo = null;
+                return View("Index");
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+
             ViewBag.Tipo = HttpContext.Session.GetString("Tipo");
             ViewBag.Logado = HttpContext.Session.GetString("Logado");
             
@@ -45,19 +50,28 @@ namespace Green_Eyes_Back.Controllers
 
         public async Task<IActionResult> GetDatesAsync()
         {
-            string start = String.Format("{0}", Request.Form["datestart"]);
-            string end = String.Format("{0}", Request.Form["dateend"]);
-            DateTime startdate = DateTime.Parse(start);
-            DateTime enddate = DateTime.Parse(end);
-            FotoService service = new FotoService();
-            List<string> lista = await service.FotosDates(startdate, enddate);
-            if (lista.Count > 0)
+            try
             {
-                List_Images listImages = new List_Images();
-                listImages.Images = lista;
-                return View("See", listImages);
+                string start = String.Format("{0}", Request.Form["datestart"]);
+                string end = String.Format("{0}", Request.Form["dateend"]);
+                DateTime startdate = DateTime.Parse(start);
+                DateTime enddate = DateTime.Parse(end);
+                FotoService service = new FotoService();
+                ObjectId plant= ObjectId.Parse(HttpContext.Session.GetString("idPlant"));
+                List<string> lista = await service.FotosDates(startdate, enddate, plant);
+                if (lista.Count > 0)
+                {
+                    List_Images listImages = new List_Images();
+                    listImages.Images = lista;
+                    return View("See", listImages);
+                }
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+            
 
         }
 

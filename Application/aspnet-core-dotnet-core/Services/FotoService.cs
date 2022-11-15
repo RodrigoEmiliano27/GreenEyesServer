@@ -14,6 +14,14 @@ namespace aspnet_core_dotnet_core.Services
             throw new System.NotImplementedException();
         }
 
+        public FotoModel FindByNotPredicted()
+        {
+            var betterFilter = Builders<FotoModel>.Filter.Eq(a => a.Classificado, false);
+            var collection = Connect();
+            var foundItens = collection.Find<FotoModel>(betterFilter).FirstOrDefault();
+            return foundItens;
+        }
+
         public List<FotoModel> FindByMonthYear(int month, int year)
         {
             string jsonquery = "{Data:{$gte:ISODate('dataInicial'),$lt:ISODate('datafinal')}}";
@@ -39,7 +47,7 @@ namespace aspnet_core_dotnet_core.Services
 
         }
 
-        public List<FotoModel> FindByDates(DateTime start, DateTime end)
+        public List<FotoModel> FindByDates(DateTime start, DateTime end,ObjectId id)
         {
             string jsonquery = "{Data:{$gte:ISODate('dataInicial'),$lt:ISODate('datafinal')}}";
 
@@ -53,6 +61,7 @@ namespace aspnet_core_dotnet_core.Services
             var collection = Connect();
             var itens = collection.Find(doc).ToList();
 
+            
             return itens;
 
         }
@@ -76,18 +85,21 @@ namespace aspnet_core_dotnet_core.Services
             
         }
 
-        public async Task<List<string>> FotosDates(DateTime start, DateTime end)
+        public async Task<List<string>> FotosDates(DateTime start, DateTime end, ObjectId idPlantacao)
         {
             List<string> imagens = new List<string>();
-            List<FotoModel> lista = FindByDates(start, end);
+            List<FotoModel> lista = FindByDates(start, end, idPlantacao);
             if (lista != null)
             {
                 foreach (FotoModel foto in lista)
                 {
-                    byte[] RawData = await AzureStorageHelper.GetDataFromBlob($"plant-{foto.Id_plantacao.ToString()}", foto.Nome);
-                    string Imagebase64 = Convert.ToBase64String(RawData);
-                    string image = $"data:image/{foto.Tipo};base64,{Imagebase64}";
-                    imagens.Add(image);
+                    if (foto.Id_plantacao == idPlantacao)
+                    {
+                        byte[] RawData = await AzureStorageHelper.GetDataFromBlob($"plant-{foto.Id_plantacao.ToString()}", foto.Nome);
+                        string Imagebase64 = Convert.ToBase64String(RawData);
+                        string image = $"data:image/{foto.Tipo};base64,{Imagebase64}";
+                        imagens.Add(image);
+                    }                
 
                 }
                 return imagens;
@@ -95,6 +107,8 @@ namespace aspnet_core_dotnet_core.Services
             return null;
 
         }
+
+
 
         protected override void SetCollection()
         {
