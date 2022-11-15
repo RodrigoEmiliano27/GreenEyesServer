@@ -13,7 +13,7 @@ Observação: Esse repositório é para a aplicação ASP.NET CORE.
 
 # Sobre o vídeo 🎥
 O link do vídeo está disponível no OneDrive:
-(Em breve)
+https://1drv.ms/v/s!Ag-akAKT0hLMgjB1YEKvvOk9O9o_?e=Pnr6sY
 
 # Grupo 👥
 Grupo: Gabriel Alves, Lucas Costa e Rodrigo Emiliano.
