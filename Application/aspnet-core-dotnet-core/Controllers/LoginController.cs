@@ -35,8 +35,7 @@ namespace Green_Eyes_Back.Controllers
                 return db_user;
         }
 
-
-
+       
         /// <summary>
         /// 
         /// </summary>
@@ -107,45 +106,7 @@ namespace Green_Eyes_Back.Controllers
             return RedirectToAction("index", "Home");
         }
 
-        [HttpPost]
-        [Route("SavePhoto")]
-        [Authorize(Roles = "1")]
-        public async Task<ActionResult<dynamic>> SavePhoto([FromBody] ImageAPI model)
-        {
-            try
-            {
-                string id = User.Identity.Name;
-                UsuarioService ServiceUser = new UsuarioService();
-                UserModel user = ServiceUser.FindById(MongoDB.Bson.ObjectId.Parse(id));
-                if (user != null)
-                {
-                    FotoModel foto = new FotoModel();
-                    foto.Id_plantacao = user.id_plantacao;
-                    foto.Id_usuario = user.id;
-                    foto.Data = DateTime.Now.ToUniversalTime();
-                    foto.Nome = model.Nome;
-                    foto.Tipo = model.Tipo;
-
-                    AzureStorageHelper.UploadToAzure($"plant-{foto.Id_plantacao.ToString()}", foto.Nome, model.Image);
-
-                    FotoService fotoService = new FotoService();
-                    fotoService.Insert(foto);
-
-
-
-                }
-                else
-                {
-                    throw new Exception("Usuário inválido!");
-                }
-
-                return Ok();
-            }
-            catch (Exception erro)
-            {
-                return BadRequest(erro.ToString());
-
-            }
+        
         }
 
     }

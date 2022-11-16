@@ -28,6 +28,7 @@ namespace aspnet_core_dotnet_core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<Classifica_Imagem_Background>();
             // Add functionality to inject IOptions<T>
             services.AddOptions();
             services.AddControllersWithViews();

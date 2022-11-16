@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using Green_eyes_server.Model;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 
 namespace aspnet_core_dotnet_core.Services
 {
     public class VisionAPIService
     {
-        private static string endpoint = @"https://greeneyesvisaopragas-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/1e5862c9-9739-4fc7-9498-3159a50f5e98/classify/iterations/Iteration1/image";
-        private static string key = "a4b92b79bfa4415483b4201321c91885";
-        public static Image ConvertBase64StringToImage(string image64Bit)
-        {
-            byte[] imageBytes = Convert.FromBase64String(image64Bit);
-            return new Bitmap(new MemoryStream(imageBytes));
-        }
+        private static string endpoint = @"https://greeneyesvision-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/21375b04-db2d-4e7d-bdd5-9923722714e2/classify/iterations/GREEN-EYES-Iteration1/image";
+        private static string key = "2406ca3d0c764940bd1f84012c694fd8";
+       
 
         private static CustomVisionPredictionClient AuthenticatePrediction(string endpoint, string predictionKey)
         {
@@ -26,25 +24,40 @@ namespace aspnet_core_dotnet_core.Services
             return predictionApi;
         }
 
-        public static async void SendImageToApi()
+        private static CustomVisionTrainingClient AuthenticateTraining(string endpoint, string trainingKey)
+        {
+            // Create the Api, passing in the training key
+            CustomVisionTrainingClient trainingApi = new CustomVisionTrainingClient(new Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.ApiKeyServiceClientCredentials(trainingKey))
+            {
+                Endpoint = endpoint
+            };
+            return trainingApi;
+        }
+
+        /// <summary>
+        /// Envia uma imagem para ser classificada no serviço de visão customizada
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<ImagePrediction> SendImageToApi()
         {
             FotoService service = new FotoService();
             FotoModel foto = service.FindByNotPredicted();
-            byte[] RawBase64Data = await AzureStorageHelper.GetDataFromBlob($"plant-{foto.Id_plantacao.ToString()}", foto.Nome);
-            string image64Bit = Convert.ToBase64String(RawBase64Data);
-            byte[] RawData= Convert.FromBase64String(image64Bit);
-            Stream stream = new MemoryStream(RawData);
+            if (foto != null)
+            {
+                byte[] RawBase64Data = await AzureStorageHelper.GetDataFromBlob($"plant-{foto.Id_plantacao.ToString()}", foto.Nome);
+                Stream stream = new MemoryStream(RawBase64Data);
 
-            FileStream fileStream = new FileStream(@"C:\Users\rodri\Downloads\WhatsApp Image 2022-11-14 at 18.38.30.jpeg",
-                FileMode.Open, FileAccess.Read);
+                CustomVisionTrainingClient trainingApi = AuthenticateTraining("https://greeneyesvision.cognitiveservices.azure.com/",
+                    "8b59529b5f4641c081741abc021f82bf");
+                CustomVisionPredictionClient predictionApi = AuthenticatePrediction("https://greeneyesvision-prediction.cognitiveservices.azure.com/",
+                    "2406ca3d0c764940bd1f84012c694fd8");
 
+                Guid guid = new Guid("21375b04-db2d-4e7d-bdd5-9923722714e2");
 
-            CustomVisionPredictionClient predictionClient= AuthenticatePrediction(endpoint,key);
-            /*var result = await predictionClient.ClassifyImageAsync(new Guid("b3ed1f68-67e2-4757-973b-71631107ab57"
-                ), "Iteration1", fileStream, "application/octet-stream");*/
+                return predictionApi.ClassifyImage(guid, "GREEN-EYES-Iteration1", stream);
+            }
 
-            var result = await predictionClient.ClassifyImageAsync(new Guid("b3ed1f68-67e2-4757-973b-71631107ab57"
-                ), "Iteration1", stream, "application/octet-stream");
+            return null;           
         }
 
         private static byte[] GetImageAsByteArray(string imageFilePath)

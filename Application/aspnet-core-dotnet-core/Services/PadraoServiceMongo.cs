@@ -40,8 +40,16 @@ namespace aspnet_core_dotnet_core.Services
 
         public virtual void Update(T model)
         {
-            //HelperDAO.ExecutaProc("spUpdate_" + Tabela, CriaParametros(model));
+            var collection = Connect();
+
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq("_id", model.id);
+
+            UpdateDefinition<T> update = UpdateFields(model);
+
+            collection.UpdateOne(filter, update);
         }
+        public abstract UpdateDefinition<T> UpdateFields(T model);
+    
 
         public virtual void Delete(int id)
         {

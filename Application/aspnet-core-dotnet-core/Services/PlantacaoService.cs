@@ -16,6 +16,11 @@ namespace Green_Eyes_Back.Services
             throw new NotImplementedException();
         }
 
+        public override UpdateDefinition<PlantacaoModel> UpdateFields(PlantacaoModel model)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void SetCollection()
         {
             this.Collection = "plantacao";

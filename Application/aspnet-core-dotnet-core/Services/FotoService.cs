@@ -107,12 +107,17 @@ namespace aspnet_core_dotnet_core.Services
             return null;
 
         }
-
-
-
         protected override void SetCollection()
         {
             this.Collection = "fotos";
+        }
+
+        public override UpdateDefinition<FotoModel> UpdateFields(FotoModel model)
+        {
+            var update = Builders<FotoModel>.Update.Set(x => x.Classificado, model.Classificado)
+           .Set(x => x.Nome, model.Nome)
+           .Set(x => x.Segmentado, model.Segmentado);
+            return update;
         }
     }
 }

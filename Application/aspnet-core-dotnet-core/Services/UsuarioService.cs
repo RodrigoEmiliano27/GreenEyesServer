@@ -33,7 +33,10 @@ namespace Green_Eyes_Back.Services
             this.Collection = "usuarios";
             this.SearchStringKey = "Login";
         }
-        
 
+        public override UpdateDefinition<UserModel> UpdateFields(UserModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
