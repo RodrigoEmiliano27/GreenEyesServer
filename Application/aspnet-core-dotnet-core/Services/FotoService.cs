@@ -49,17 +49,13 @@ namespace aspnet_core_dotnet_core.Services
 
         public List<FotoModel> FindByDates(DateTime start, DateTime end,ObjectId id)
         {
-            string jsonquery = "{Data:{$gte:ISODate('dataInicial'),$lt:ISODate('datafinal')}}";
-
-            jsonquery = jsonquery.Replace("dataInicial", $"{start.Year.ToString()}-{start.Month.ToString("00")}-{start.Day.ToString("00")}");
-            jsonquery = jsonquery.Replace("datafinal", $"{end.Year.ToString()}-{end.Month.ToString("00")}-{end.Day.ToString("00")}");
-
-            BsonDocument doc = MongoDB.Bson.Serialization
-                   .BsonSerializer.Deserialize<BsonDocument>(jsonquery);
-
+            var filterBuilder = Builders<FotoModel>.Filter;
+            var filter = filterBuilder.Gte(x => x.Data, new BsonDateTime(start)) &
+             filterBuilder.Lte(x => x.Data, new BsonDateTime(end)) &
+             filterBuilder.Eq(x => x.Id_plantacao, id);
 
             var collection = Connect();
-            var itens = collection.Find(doc).ToList();
+            var itens = collection.Find(filter).ToList(); 
 
             
             return itens;
