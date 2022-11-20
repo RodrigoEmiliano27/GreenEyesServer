@@ -1,0 +1,16 @@
+﻿@using aspnet_core_dotnet_core.Models
+@model List<DiagnosticoViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>
+    <div >
+    <h2>Imagens </h2>
+    @foreach(DiagnosticoViewModel diag in @Model)
+        {
+             <img src="@diag.Imagem"/>
+        }
+
+    </div>
+</body>
+

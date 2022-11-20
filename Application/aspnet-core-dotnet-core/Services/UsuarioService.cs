@@ -34,6 +34,20 @@ namespace Green_Eyes_Back.Services
             this.SearchStringKey = "Login";
         }
 
+        public virtual void UpdatePassword(ObjectId id, string senha)
+        {
+            var collection = Connect();
+            FilterDefinition<UserModel> filter = Builders<UserModel>.Filter.Eq("_id", id);
+            UpdateDefinition<UserModel> update = UpdatePasswordDefinition(senha);
+            collection.UpdateOne(filter, update);
+        }
+
+        private UpdateDefinition<UserModel> UpdatePasswordDefinition(string senha)
+        {
+            var update = Builders<UserModel>.Update.Set(x => x.Senha, senha);
+            return update;
+        }
+
         public override UpdateDefinition<UserModel> UpdateFields(UserModel model)
         {
             throw new NotImplementedException();

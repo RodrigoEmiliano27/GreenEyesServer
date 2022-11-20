@@ -1,0 +1,43 @@
+﻿@using Green_eyes_server.Model
+@using aspnet_core_dotnet_core.Models
+@model UserModelCreateViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="background-image:url('images/imagemfundo.png')">
+    <h2>Cadastro da Usuário</h2>
+    <form asp-action="Save" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />
+
+
+        <label for="Nome" class="control-label">Nome</label>
+        <input type="text" Name="Nome" value="@Model.Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+        <br />
+
+        <label for="Login" class="control-label">Login</label>
+        <input type="text" Name="Login" value="@Model.Login" class="form-control" />
+        <span asp-validation-for="Login" class="text-danger"></span>
+        <br />
+
+        <label for="TipoString" class="control-label">Tipo de usuário</label>
+        <select asp-for="TipoString" asp-items="ViewBag.Categorias" class="form-control"> </select>
+        <span asp-validation-for="TipoString" class="text-danger"></span>
+        <br />
+
+        <label for="Senha" class="control-label">Senha</label>
+        <input type="password" Name="Senha" value="@Model.Senha" class="form-control" />
+        <span asp-validation-for="Senha" class="text-danger"></span>
+        <br />
+
+         <label for="Nome" class="control-label">Repetir senha</label>
+        <input type="password" Name="SenhaRepetida" value="@Model.SenhaRepetida" class="form-control" />
+        <span asp-validation-for="SenhaRepetida" class="text-danger"></span>
+        <br />
+
+        <input type="submit" value="Salvar dados" class="btn-info" />
+        &nbsp;&nbsp;&nbsp;
+        <a href="/Jogador/index" class="btn-light">Voltar</a>
+        <br />
+    </form>
+</div>

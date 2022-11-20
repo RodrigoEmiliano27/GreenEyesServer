@@ -61,20 +61,13 @@ namespace aspnet_core_dotnet_core.Services
             HelperDAO.ExecutaProc("spDelete", p);*/
         }
 
-        public virtual T Consulta(int id)
+        public virtual T Consulta(ObjectId id)
         {
-            /*var p = new SqlParameter[]
-            {
-                new SqlParameter("id", id),
-                new SqlParameter("tabela", Tabela)
-            };
-            var tabela = HelperDAO.ExecutaProcSelect("spConsulta", p);
-            if (tabela.Rows.Count == 0)
-                return null;
-            else
-                return MontaModel(tabela.Rows[0]);*/
+            var collection = Connect();
 
-            return null;
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq("_id", id);
+
+            return collection.Find<T>(filter).First();
         }
 
         public virtual List<T> Listagem()

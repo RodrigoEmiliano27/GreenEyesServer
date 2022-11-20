@@ -37,10 +37,10 @@
                                 
                                 @if (Context.Session.GetString("Tipo") == "1")
                                 {// permissão de adm
-                                    <a asp-area="" asp-controller="Home" asp-action="Contact">Cadastrar Usuário</a> 
+                                    <a asp-area="" asp-controller="User" asp-action="Create">Cadastrar Usuário</a> 
                                 }
                                
-                                <a asp-area="" asp-controller="Home" asp-action="Contact">Meus diagnósticos</a>
+                                <a asp-area="" asp-controller="Diagnostico" asp-action="Index">Meus diagnósticos</a>
 
                                 <a asp-area="" asp-controller="Foto" asp-action="Index">Minhas imagens</a>
 
@@ -63,6 +63,8 @@
 
                             <a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
 
+                            <a asp-area="" asp-controller="User" asp-action="AlterarSenha">Alterar senha</a>
+
                         </div>
 
                     </div>
@@ -81,7 +83,7 @@
         </nav>
 
     </header>
-    <div style=" background-image:url('images/imagemfundo.png'); background-size:cover; background-attachment:fixed; height:100vh;">
+    <div style=" background-image:url('/images/imagemfundo.png'); background-size:cover; background-attachment:fixed; height:100vh;">
         <div class="container ">
             <main role="main" class="pb-3">
                 @RenderBody()
