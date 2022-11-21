@@ -3,14 +3,47 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<body>
-    <div >
-    <h2>Imagens </h2>
+
+    <h2>Diagnósticos </h2>
     @foreach(DiagnosticoViewModel diag in @Model)
         {
-             <img src="@diag.Imagem"/>
+             <table class="table table-responsive table-striped">
+                <tbody  style="background-image:url('/images/fundobranco.jpg'); background-size:cover; background-attachment:fixed">
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><img src="@diag.Imagem" style=""/></td>
+                    <td>
+                        <table class="table table-responsive table-striped">
+                        <tr>
+                            <th>Data</th>
+                            <th>Classificação</th>
+                            <th>Percentual</th>
+                        </tr>
+                        <tr>
+                            <td>@diag.Diagnostico.Data.ToString("dd/MM/yyyy")</td>
+                            @if (@diag.Diagnostico.SemClassificacao)
+                            {
+                                <td>Não classificado</td>
+                                <td>00.00%</td>
+                            }
+                            else
+                            {
+                               <td>@diag.Diagnostico.Classificacao_final</td> 
+                               <td>@((@diag.Diagnostico.Grau_certeza*100).ToString("00.00"))</td>
+                            }
+
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+                         
         }
 
-    </div>
-</body>
+
+
 

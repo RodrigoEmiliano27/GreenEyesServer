@@ -1,19 +1,37 @@
 ﻿@using aspnet_core_dotnet_core.Models
-@model List_Images
+@model List<FotosViewModel>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<body>
-    <div >
-    <h2>Imagens </h2>
 
-        @if (@Model != null)
+ <h2>Imagens </h2>
+    @foreach(FotosViewModel foto in @Model)
         {
-            foreach (string foto in @Model.Images)
-            {
-                <img src="@foto"/>
-            }
+             <table class="table table-responsive table-striped">
+                <tbody  style="background-image:url('/images/fundobranco.jpg'); background-size:cover; background-attachment:fixed">
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td><img src="@foto.imagem" style=""/></td>
+                    <td>
+                        <table class="table table-responsive table-striped">
+                        <tr>
+                            <th>Data</th>
+                            <th>Nome</th>
+                            <th>Classificado</th>
+                        </tr>
+                        <tr>
+                            <td>@foto.foto.Data.ToString("dd/MM/yyyy")</td>
+                            <td>@foto.foto.Nome</td>
+                            <td>@foto.foto.Classificado</td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+                         
         }
-    </div>
-</body>
 

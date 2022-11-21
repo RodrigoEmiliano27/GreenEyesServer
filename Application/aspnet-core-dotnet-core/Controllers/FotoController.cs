@@ -58,13 +58,11 @@ namespace Green_Eyes_Back.Controllers
                 DateTime enddate = DateTime.Parse(end);
                 FotoService service = new FotoService();
                 ObjectId plant= ObjectId.Parse(HttpContext.Session.GetString("idPlant"));
-                List<string> lista = await service.FotosDates(startdate, enddate, plant);
+                List<FotosViewModel> lista = await service.FotosDates(startdate, enddate, plant);
                 if (lista.Count > 0)
-                {
-                    List_Images listImages = new List_Images();
-                    listImages.Images = lista;
-                    return View("See", listImages);
-                }
+                    return View("See", lista);
+
+
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception erro)

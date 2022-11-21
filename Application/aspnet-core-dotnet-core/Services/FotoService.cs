@@ -1,4 +1,5 @@
-﻿using Green_eyes_server.Model;
+﻿using aspnet_core_dotnet_core.Models;
+using Green_eyes_server.Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -81,9 +82,9 @@ namespace aspnet_core_dotnet_core.Services
             
         }
 
-        public async Task<List<string>> FotosDates(DateTime start, DateTime end, ObjectId idPlantacao)
+        public async Task<List<FotosViewModel>> FotosDates(DateTime start, DateTime end, ObjectId idPlantacao)
         {
-            List<string> imagens = new List<string>();
+            List<FotosViewModel> fotos = new List<FotosViewModel>();
             List<FotoModel> lista = FindByDates(start, end, idPlantacao);
             if (lista != null)
             {
@@ -91,14 +92,17 @@ namespace aspnet_core_dotnet_core.Services
                 {
                     if (foto.Id_plantacao == idPlantacao)
                     {
+                        FotosViewModel fotoView = new FotosViewModel();
                         byte[] RawData = await AzureStorageHelper.GetDataFromBlob($"plant-{foto.Id_plantacao.ToString()}", foto.Nome);
                         string Imagebase64 = Convert.ToBase64String(RawData);
                         string image = $"data:image/{foto.Tipo};base64,{Imagebase64}";
-                        imagens.Add(image);
+                        fotoView.imagem = image;
+                        fotoView.foto = foto;
+                        fotos.Add(fotoView);
                     }                
 
                 }
-                return imagens;
+                return fotos;
             }
             return null;
 
