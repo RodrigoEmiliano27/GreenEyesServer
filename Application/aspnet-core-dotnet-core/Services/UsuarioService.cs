@@ -14,12 +14,35 @@ namespace Green_Eyes_Back.Services
     {
         public override UserModel FindByString(string value)
         {
-            var betterFilter = Builders<UserModel>.Filter.Eq(a => a.Login, value);
+         
+           var betterFilter = Builders<UserModel>.Filter.Eq(a => a.Login, value);
             var collection = Connect();
             var foundItens = collection.Find<UserModel>(betterFilter).FirstOrDefault();
             return foundItens;
         }
 
+        public  UserModel FindByLoginSenha(UserModel model)
+        {
+            var filterBuilder = Builders<UserModel>.Filter;
+            var filter = filterBuilder.Eq(a => a.Ativado, true) &
+                filterBuilder.Eq(x => x.Login, model.Login) &
+                filterBuilder.Eq(x => x.Senha, model.Senha);
+
+            var collection = Connect();
+            var foundItens = collection.Find<UserModel>(filter).FirstOrDefault();
+            return foundItens;
+        }
+        public List<UserModel> GetUsersList(ObjectId idPlant)
+        {
+            var filterBuilder = Builders<UserModel>.Filter;
+            var filter = filterBuilder.Eq(a => a.id_plantacao, idPlant);
+
+            var collection = Connect();
+            var foundItens = collection.Find<UserModel>(filter).ToList();
+
+            return foundItens;
+
+        }
         public UserModel FindById(ObjectId value)
         {
             var betterFilter = Builders<UserModel>.Filter.Eq(a => a.id, value);

@@ -1,6 +1,7 @@
 ﻿using aspnet_core_dotnet_core.Services;
 using Green_eyes_server.Model;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,10 @@ namespace Green_Eyes_Back.Services
         protected override void SetCollection()
         {
             this.Collection = "plantacao";
-            
+
         }
+
+
 
         
     }

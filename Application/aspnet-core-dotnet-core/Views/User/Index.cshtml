@@ -1,0 +1,42 @@
+﻿@using Green_eyes_server.Model
+@model List<UserModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Relação de Usuários</h2>
+
+<br />
+<a href="/CategoriaProduto/Create">Novo Registro</a>
+<br />
+
+    <table class="table table-responsive table-striped">
+    <tbody  style="background-image:url('/images/fundobranco.jpg'); background-size:cover; background-attachment:fixed">
+    <tr>
+        <th>Ações</th>
+        <th>Nome</th>
+        <th>Habilitado</th>
+    </tr>
+
+    @foreach (UserModel a in Model)
+    {
+        <tr>
+            <td>
+                @if(@a.Ativado)
+                {
+                    <a href="User/DesabilitaAcesso?id=@a.id" class="btn btn-danger">Desabilitar Acesso</a>
+                }
+                else
+                {
+                    <a href="User/HabilitaAcesso?id=@a.id" class="btn btn-info">Habilitar Acesso</a>
+                }
+                
+                
+            </td>
+            <td>@a.Nome</td>
+            <td>@a.Ativado</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

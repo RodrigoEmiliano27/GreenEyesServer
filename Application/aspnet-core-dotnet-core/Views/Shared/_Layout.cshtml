@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/dropdownmenu.css" />
+    <link rel="stylesheet" href="~/css/sweetalert.css" />
      <style>
     
 
@@ -38,6 +39,7 @@
                                 @if (Context.Session.GetString("Tipo") == "1")
                                 {// permissão de adm
                                     <a asp-area="" asp-controller="User" asp-action="Create">Cadastrar Usuário</a> 
+                                    <a asp-area="" asp-controller="User" asp-action="Index">Gerenciar Usuários</a> 
                                 }
                                
                                 <a asp-area="" asp-controller="Diagnostico" asp-action="Index">Meus diagnósticos</a>
@@ -100,6 +102,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sweetalert.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -20,6 +20,47 @@ namespace Green_Eyes_Back.Controllers
         {
         }
 
+        public virtual IActionResult Index()
+        {
+            try
+            {
+                var lista = new UsuarioService().GetUsersList(new MongoDB.Bson.ObjectId(HttpContext.Session.GetString("idPlant")));
+                return View("Index", lista);
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
+        public virtual IActionResult DesabilitaAcesso(string id)
+        {
+            try
+            {
+                UsuarioService service = new UsuarioService();
+                service.Desabilitar(new MongoDB.Bson.ObjectId(id));
+                return Index();
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
+        public virtual IActionResult HabilitaAcesso(string id)
+        {
+            try
+            {
+                UsuarioService service = new UsuarioService();
+                service.Habilitar(new MongoDB.Bson.ObjectId(id));
+                return Index();
+            }
+            catch (Exception erro)
+            {
+                return View("Error", new ErrorViewModel(erro.ToString()));
+            }
+        }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ViewBag.Tipo = HttpContext.Session.GetString("Tipo");

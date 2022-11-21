@@ -26,10 +26,10 @@ namespace Green_Eyes_Back.Controllers
         {
             // Recupera o usuário
             UsuarioService service = new UsuarioService();
-            UserModel db_user = service.FindByString(model.Login);
+            UserModel db_user = service.FindByLoginSenha(model);
 
             // Verifica se o usuário existe e é válido
-            if (!(db_user != null && db_user.Login == model.Login && db_user.Senha == model.Senha))
+            if (db_user==null)
                 return null;
             else
                 return db_user;

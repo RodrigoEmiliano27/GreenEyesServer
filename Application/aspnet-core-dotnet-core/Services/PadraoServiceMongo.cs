@@ -70,6 +70,22 @@ namespace aspnet_core_dotnet_core.Services
             return collection.Find<T>(filter).First();
         }
 
+        public virtual void Desabilitar(ObjectId id)
+        {
+            var collection = Connect();
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq("_id", id);
+            UpdateDefinition<T> update = Builders<T>.Update.Set(x => x.Ativado, false);
+            collection.UpdateOne(filter, update);
+        }
+
+        public virtual void Habilitar(ObjectId id)
+        {
+            var collection = Connect();
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq("_id", id);
+            UpdateDefinition<T> update = Builders<T>.Update.Set(x => x.Ativado, true);
+            collection.UpdateOne(filter, update);
+        }
+
         public virtual List<T> Listagem()
         {
             /*var p = new SqlParameter[]
