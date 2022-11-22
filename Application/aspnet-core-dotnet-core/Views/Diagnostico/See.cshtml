@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h2>Diagnósticos </h2>
+<div>
+     <h2>Diagnósticos </h2>
     @foreach(DiagnosticoViewModel diag in @Model)
         {
              <table class="table table-responsive table-striped">
@@ -43,6 +44,8 @@
             </table>
                          
         }
+</div>
+   
 
 
 

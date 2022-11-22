@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div style="background-image:url('images/imagemfundo.png')">
+<div style="height:100vh;">
     <h2>Cadastro da Plantação</h2>
     <form asp-action="Save" method="post" enctype="multipart/form-data">
         <input type="hidden" name="Operacao" value="@ViewBag.Operacao" />

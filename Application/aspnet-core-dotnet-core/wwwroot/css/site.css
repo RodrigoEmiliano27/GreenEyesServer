@@ -127,3 +127,9 @@ body {
 .col-md-4 {
     color: black;
 }
+
+.scrolling-image {
+    background-image: url("/images/imagemfundo.png");
+    background-repeat:repeat-x;
+    height: 100vh
+}
