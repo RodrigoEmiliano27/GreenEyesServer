@@ -54,7 +54,7 @@ namespace aspnet_core_dotnet_core.Services
 
                 Guid guid = new Guid("21375b04-db2d-4e7d-bdd5-9923722714e2");
 
-                return predictionApi.ClassifyImage(guid, "GREEN-EYES-Iteration1", stream);
+                return predictionApi.ClassifyImage(guid, "GREEN-EYES-Iteration2", stream);
             }
 
             return null;           
